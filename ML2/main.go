@@ -13,7 +13,7 @@ func CountDifference(set ThreeElementInt64Set, number int64) ThreeElementInt64Se
 	return ThreeElementInt64Set{ int64(math.Abs(float64(set.a - number))), int64(math.Abs(float64(set.b - number))), int64(math.Abs(float64(set.c - number))) }
 }
 
-func FindNum(set ThreeElementInt64Set, dif ThreeElementInt64Set, pred func(int64, int64) bool) int64 {
+func FindNum(dif ThreeElementInt64Set, pred func(int64, int64) bool) int64 {
 	if pred(dif.a, dif.b) {
 		if pred(dif.a, dif.c) {
 			return dif.a
@@ -38,9 +38,11 @@ func CountNumbers(set ThreeElementInt64Set, distance int64, number int64) (count
 	counter += CountNum(set.a, number + distance)
 	counter += CountNum(set.b, number + distance)
 	counter += CountNum(set.c, number + distance)
-	counter += CountNum(set.a, number - distance)
-	counter += CountNum(set.b, number - distance)
-	counter += CountNum(set.c, number - distance)
+	if distance != 0 {
+		counter += CountNum(set.a, number - distance)
+		counter += CountNum(set.b, number - distance)
+		counter += CountNum(set.c, number - distance)
+	}
 	return
 }
 
@@ -72,8 +74,8 @@ func main() {
 
 	var (
 		dif      = CountDifference(abc, x)
-		minDIf   = FindNum(abc, dif, func(first int64, second int64) bool { return first <= second })
-		maxDif   = FindNum(abc, dif, func(first int64, second int64) bool { return first >= second })
+		minDIf   = FindNum(dif, func(first int64, second int64) bool { return first <= second })
+		maxDif   = FindNum(dif, func(first int64, second int64) bool { return first >= second })
 		countMin = CountNumbers(abc, minDIf, x)
 		countMax = CountNumbers(abc, maxDif, x)
 		result   int64
