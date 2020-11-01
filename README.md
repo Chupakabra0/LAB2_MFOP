@@ -117,7 +117,7 @@ func main() {
   
 4. Составим предусловие:
   
-  `Q: {∀A, B, C, X: multiset(A, B, C) ∧ X}`
+  `Q: {∀a, b, c, x: multiset1(A = a, B = b, C = c) ∧ X = x}`
   
 5. Составим постусловие:
   
@@ -141,15 +141,16 @@ func main() {
   // Начало выполнения программы
 	var (
 		dif      = CountDifference(abc, x)
-                // {multiset(A, B, C) ∧ multiset(abs(A - X), abs(B - X), abs(C- X) ∧ X} = {multiset1(A, B, C) ∧ multiset2(A', B', C') ∧ X}
+                // {∀a, b, c, x: multiset1(A = a, B = b, C = c) ∧ X = x ∧ multiset2(A' = abs(A - X), B' = abs(B - X), C' = abs(C- X) }
+		// где abs(A) = {∀a: A = a ∧ ((A < 0 ∧ result = -A) ∨ (A >= 0 ∧ result = A))}
     
 		minDIf   = FindNum(dif, func(first int64, second int64) bool { return first <= second })
 		maxDif   = FindNum(dif, func(first int64, second int64) bool { return first >= second })
-                // {multiset1(A, B, C) ∧ multiset2(A', B', C') ∧ (∀i = 0, 1, 2 ∧ ∀j = 0, 1, 2: multiset2[i] <= multiset2[j]) ∧ (∀i = 0, 1, 2 ∧ ∀j = 0, 1, 2: multiset2[i] <= multiset2[j]) ∧ X} = {multiset1(A, B, C) ∧ multiset2(A', B', C') ∧ Mn ∧ Mx ∧ X}
+                // {∀a, b, c, x: multiset1(A = a, B = b, C = c) ∧ multiset2(A' = abs(A - X), B' = abs(B - X), C' = abs(C - X)) ∧ (∀i = 0, 1, 2 ∧ ∀j = 0, 1, 2: multiset2[i] <= multiset2[j]) ∧ (∀i = 0, 1, 2 ∧ ∀j = 0, 1, 2: multiset2[i] <= multiset2[j]) ∧ X} = {multiset1((A = a, B = b, C = c) ∧ multiset2(A' = abs(A - X), B' = abs(B - X), C' = abs(C - X)) ∧ Mn ∧ Mx ∧ X}
     
 		countMin = CountNumbers(abc, minDIf, x)
 		countMax = CountNumbers(abc, maxDif, x)
-                // {multiset1(A, B, C) ∧ multiset2(A', B', C') ∧ Mn ∧ Mx ∧ {∀i = 0, 1, 2: multiset[i] = x + Mn} ∧ {∀i = 0, 1, 2: multiset[i] = x + Mx} ∧ X} = {multiset1(A, B, C) ∧ multiset2(A', B', C') ∧ Mn ∧ Mx ∧ Cnx ∧ Cmx ∧ X}
+                // {∀a, b, c, x: multiset1(A = a, B = b, C = c) ∧ multiset2(A' = abs(A - X), B' = abs(B - X), C' = abs(C - X)) ∧ Mn ∧ Mx ∧ {∀i = 0, 1, 2: multiset1[i] = X + Mn} ∧ {∀i = 0, 1, 2: multiset1[i] = X + Mx} ∧ X} = {multiset1(A, B, C) ∧ multiset2(A', B', C') ∧ Mn ∧ Mx ∧ Cnx ∧ Cmx ∧ X}
     
 		result   int64
 	)
