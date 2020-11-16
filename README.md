@@ -39,7 +39,7 @@
 	 (Abs(c - x) > Abs(a - x) ∧ Abs(c - x) > Abs(b - x) ∧ result == c)
   }`
   
-  `where Abs(a) =(a < 0 ∧ result == -a) ∨ (a >= 0 ∧ result = a)`
+  `Abs(a) =(a < 0 ∧ result = -a) ∨ (a >= 0 ∧ result = a)`
   
   4. Составим спецификацию данной программы:
   
